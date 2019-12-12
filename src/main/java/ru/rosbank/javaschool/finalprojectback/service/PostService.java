@@ -12,6 +12,7 @@ import ru.rosbank.javaschool.finalprojectback.mapper.PostMapper;
 import ru.rosbank.javaschool.finalprojectback.repository.PostRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,21 +28,30 @@ public class PostService {
     }
 
     public List<PostResponseDto> getSomePosts(int lastPost, int step) {
-        return repository.getReversePosts().stream()
+        return repository.findAll().stream()
+                .sorted((o1, o2) -> -(o1.getId() - o2.getId()))
                 .skip(lastPost)
                 .limit(step)
                 .map(mapper::entityToPostResponseDto)
                 .collect(Collectors.toList());
 
     }
-
     public int getCountOfNewPosts(int firstPostId) {
-        List<PostEntity> collect = repository.getSomePosts(firstPostId);
-        return collect.size();
+        Optional<PostEntity> firstPost = repository.findById(firstPostId);
+        ;
+        List<Optional<PostEntity>> collect = repository.findAll().stream()
+                .sorted((o1, o2) -> -(o1.getId() - o2.getId()))
+                .map(Optional::of)
+                .collect(Collectors.toList());
+        return collect.indexOf(firstPost);
     }
-
     public int getFirstId() {
-        return repository.findFirst().getId();
+        List<PostResponseDto> collect = repository.findAll().stream()
+                .sorted((o1, o2) -> -(o1.getId() - o2.getId()))
+                .limit(1)
+                .map(mapper::entityToPostResponseDto)
+                .collect(Collectors.toList());
+        return collect.get(0).getId();
     }
 
     public void removeById(int id) {

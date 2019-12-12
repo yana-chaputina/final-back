@@ -1,7 +1,7 @@
 ### - разделитель для запросов
 
 
-GET {{url}}/api/posts?lastPostId=2&step=2
+GET {{url}}/api/posts?lastPost=0&step=3
 
 ###
 GET {{url}}/api/posts?firstPostId=3

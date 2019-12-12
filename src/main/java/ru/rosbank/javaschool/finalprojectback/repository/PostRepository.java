@@ -19,16 +19,5 @@ public interface PostRepository extends JpaRepository<PostEntity, Integer> {
     @Query("UPDATE PostEntity p SET p.likes = p.likes - :decrement WHERE p.id = :id")
     void decreaseLikesById(@Param("id") int id, @Param("decrement") int decrement);
 
-    @Modifying
-    @Query("FROM PostEntity p ORDER BY id DESC")
-    List<PostEntity> getReversePosts();
-
-    @Modifying
-    @Query("FROM PostEntity p WHERE p.id>:id ORDER BY id DESC")
-    List<PostEntity> getSomePosts(@Param("id") int id);
-
-    @Modifying
-    @Query("FROM PostEntity p ORDER BY id DESC")
-    PostEntity findFirst();
 
 }

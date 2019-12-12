@@ -14,9 +14,9 @@ import java.util.List;
 public class RestPostController {
     private final PostService service;
 
-    @GetMapping(params = {"lastPostId", "step"})
-    public List<PostResponseDto> getSomePosts(@RequestParam int lastPostId, @RequestParam int step) {
-        return service.getSomePosts(lastPostId, step);
+    @GetMapping(params = {"lastPost", "step"})
+    public List<PostResponseDto> getSomePosts(@RequestParam int lastPost, @RequestParam int step) {
+        return service.getSomePosts(lastPost, step);
     }
 
     @GetMapping(params = {"firstPostId"})

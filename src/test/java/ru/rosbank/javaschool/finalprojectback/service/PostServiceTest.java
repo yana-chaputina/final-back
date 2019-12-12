@@ -45,7 +45,7 @@ class PostServiceTest {
         PostEntity post = new PostEntity(1, 1, "ivan", LocalDate.now(), "content", "", false, 0);
         List<PostEntity> list = new ArrayList<>();
         list.add(post);
-        when(repoMock.getReversePosts()).thenReturn(list);
+        when(repoMock.findAll()).thenReturn(list);
 
         PostResponseDto dto = new PostResponseDto(1, 1, "ivan", LocalDate.now(), "content", "", 0);
         List<PostResponseDto> listDto = new ArrayList<>();
@@ -64,11 +64,12 @@ class PostServiceTest {
         PostEntity post = new PostEntity(1, 1, "ivan", LocalDate.now(), "content", "", false, 0);
         List<PostEntity> list = new ArrayList<>();
         list.add(post);
-        when(repoMock.getSomePosts(0)).thenReturn(list);
+        when(repoMock.findById(1)).thenReturn(Optional.of(post));
+        when(repoMock.findAll()).thenReturn(list);
 
         PostService service = new PostService(repoMock, mapperMock);
-        int actual = service.getCountOfNewPosts(0);
-        assertEquals(1, actual);
+        int actual = service.getCountOfNewPosts(1);
+        assertEquals(0, actual);
     }
 
     @Test
@@ -76,7 +77,13 @@ class PostServiceTest {
         PostRepository repoMock = mock(PostRepository.class);
         PostMapper mapperMock = mock(PostMapper.class);
         PostEntity post = new PostEntity(1, 1, "ivan", LocalDate.now(), "content", "", false, 0);
-        when(repoMock.findFirst()).thenReturn(post);
+        List<PostEntity> list = new ArrayList<>();
+        list.add(post);
+        when(repoMock.findAll()).thenReturn(list);
+        PostResponseDto dto = new PostResponseDto(1, 1, "ivan", LocalDate.now(), "content", "", 0);
+        List<PostResponseDto> listDto = new ArrayList<>();
+        listDto.add(dto);
+        when(mapperMock.entityToPostResponseDto(post)).thenReturn(dto);
 
         PostService service = new PostService(repoMock, mapperMock);
         int actual = service.getFirstId();

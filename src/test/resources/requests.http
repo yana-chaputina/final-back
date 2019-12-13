@@ -2,13 +2,11 @@
 
 
 GET {{url}}/api/posts?lastPost=0&step=3
-
-###
-GET {{url}}/api/posts?firstPostId=3
-
+Authorization: Basic vasya secret
 ###
 
 POST {{url}}/api/posts
+Authorization: Basic vasya secret
 Content-Type: application/json
 
 {
@@ -21,20 +19,40 @@ Content-Type: application/json
 
 ###
 
-POST {{url}}/api/posts
+POST {{url}}/api/users
+Authorization: Basic vasya secret
 Content-Type: application/json
 
 {
   "id": 0,
-  "content": "Dislike this stuff! I'm disagree with author!",
-  "media": null
+  "name": "Ivan",
+  "username": "ivan",
+  "password": "ivan",
+  "email": "ivan@mail.ru",
+  "photo": null
 }
 
 ###
 
-DELETE {{url}}/api/posts/1
+GET {{url}}/api/users/me
+Authorization: Basic vasya secret
 
 ###
+
+DELETE {{url}}/api/posts/1
+Authorization: Basic vasya secret
+
+###
+
+DELETE {{url}}/api/posts/2
+Authorization: Basic vasya secret
+
+
+
+
+###
+
+
 
 POST {{url}}/api/posts/2/likes
 
@@ -56,7 +74,7 @@ POST {{url}}/api/files/multipart
 Content-Type: multipart/form-data; boundary=WebApp
 
 --WebApp
-Content-Disposition: form-data; name="file"; filename="panda.jpg"
+Content-Disposition: form-data; name="file"; filename="panda.jpd"
 Content-Type: image/jpeg
 
 < ./java.jpg

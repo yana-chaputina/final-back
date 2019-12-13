@@ -3,6 +3,7 @@ package ru.rosbank.javaschool.finalprojectback.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
+import ru.rosbank.javaschool.finalprojectback.constants.PostConstant;
 import ru.rosbank.javaschool.finalprojectback.dto.PostResponseDto;
 import ru.rosbank.javaschool.finalprojectback.dto.PostSaveRequestDto;
 import ru.rosbank.javaschool.finalprojectback.entity.PostEntity;
@@ -14,9 +15,9 @@ public interface PostMapper {
     PostResponseDto entityToPostResponseDto(PostEntity entity);
 
     @Mappings({
-            @Mapping(target = "likes", constant = "0"),
-            @Mapping(target = "removed", constant = "false"),
-            @Mapping(target = "created", expression = "java(java.time.LocalDate.now())")
+            @Mapping(target = PostConstant.LIKES, constant = "0"),
+            @Mapping(target = PostConstant.REMOVED, constant = "false"),
+            @Mapping(target = PostConstant.CREATED, expression = "java(java.time.LocalDate.now())")
     })
     PostEntity dtoToPostEntity(PostSaveRequestDto dto);
 }

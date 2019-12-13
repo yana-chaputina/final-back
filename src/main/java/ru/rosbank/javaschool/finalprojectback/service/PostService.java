@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.rosbank.javaschool.finalprojectback.dto.PostResponseDto;
 import ru.rosbank.javaschool.finalprojectback.dto.PostSaveRequestDto;
 import ru.rosbank.javaschool.finalprojectback.entity.PostEntity;
-import ru.rosbank.javaschool.finalprojectback.exception.BadRequestException;
 import ru.rosbank.javaschool.finalprojectback.exception.NotFoundException;
 import ru.rosbank.javaschool.finalprojectback.mapper.PostMapper;
 import ru.rosbank.javaschool.finalprojectback.repository.PostRepository;
@@ -29,6 +28,7 @@ public class PostService {
 
     public List<PostResponseDto> getSomePosts(int lastPost, int step) {
         return repository.findAll().stream()
+                .filter(o -> o.isRemoved() == false)
                 .sorted((o1, o2) -> -(o1.getId() - o2.getId()))
                 .skip(lastPost)
                 .limit(step)
@@ -36,10 +36,12 @@ public class PostService {
                 .collect(Collectors.toList());
 
     }
+
     public int getCountOfNewPosts(int firstPostId) {
         Optional<PostEntity> firstPost = repository.findById(firstPostId);
         ;
         List<Optional<PostEntity>> collect = repository.findAll().stream()
+                .filter(o -> o.isRemoved() == false)
                 .sorted((o1, o2) -> -(o1.getId() - o2.getId()))
                 .map(Optional::of)
                 .collect(Collectors.toList());
@@ -47,6 +49,7 @@ public class PostService {
     }
     public int getFirstId() {
         List<PostResponseDto> collect = repository.findAll().stream()
+                .filter(o -> o.isRemoved() == false)
                 .sorted((o1, o2) -> -(o1.getId() - o2.getId()))
                 .limit(1)
                 .map(mapper::entityToPostResponseDto)
@@ -54,12 +57,19 @@ public class PostService {
         return collect.get(0).getId();
     }
 
+    public PostResponseDto getPostById(int id) {
+        return repository.findById(id)
+                .map(mapper::entityToPostResponseDto)
+                .orElseThrow(NotFoundException::new);
+    }
+
     public void removeById(int id) {
-        repository.deleteById(id);
+        repository.setRemovedById(id);
     }
 
     public List<PostResponseDto> searchByContent(String q) {
         return repository.findAllByContentLike(q).stream()
+                .filter(o -> o.isRemoved() == false)
                 .map(mapper::entityToPostResponseDto)
                 .collect(Collectors.toList());
     }
@@ -67,14 +77,14 @@ public class PostService {
     public PostResponseDto likeById(int id) {
         repository.increaseLikesById(id, 1);
         final PostEntity entity = repository.findById(id)
-                .orElseThrow(BadRequestException::new);
+                .orElseThrow(NotFoundException::new);
         return mapper.entityToPostResponseDto(entity);
     }
 
     public PostResponseDto dislikeById(int id) {
         repository.increaseLikesById(id, -1);
         final PostEntity entity = repository.findById(id)
-                .orElseThrow(BadRequestException::new);
+                .orElseThrow(NotFoundException::new);
         return mapper.entityToPostResponseDto(entity);
     }
 

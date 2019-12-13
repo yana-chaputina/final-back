@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import ru.rosbank.javaschool.finalprojectback.dto.PostResponseDto;
 import ru.rosbank.javaschool.finalprojectback.dto.PostSaveRequestDto;
 import ru.rosbank.javaschool.finalprojectback.entity.PostEntity;
-import ru.rosbank.javaschool.finalprojectback.exception.BadRequestException;
+import ru.rosbank.javaschool.finalprojectback.exception.NotFoundException;
 import ru.rosbank.javaschool.finalprojectback.mapper.PostMapper;
 import ru.rosbank.javaschool.finalprojectback.repository.PostRepository;
 
@@ -91,6 +91,36 @@ class PostServiceTest {
     }
 
     @Test
+    void getPostById() {
+
+        PostRepository repoMock = mock(PostRepository.class);
+        PostMapper mapperMock = mock(PostMapper.class);
+        PostEntity post = new PostEntity(1, 1, "ivan", LocalDate.now(), "content", "", false, 1);
+
+        when(repoMock.findById(1)).thenReturn(java.util.Optional.of(post));
+
+        PostResponseDto dto = new PostResponseDto(1, 1, "ivan", LocalDate.now(), "content", "", 1);
+
+        when(mapperMock.entityToPostResponseDto(post)).thenReturn(dto);
+
+        PostService service = new PostService(repoMock, mapperMock);
+        PostResponseDto actual = service.getPostById(1);
+        assertEquals(actual, dto);
+    }
+
+    @Test
+    void getPostByIdThrowExcept() {
+
+        PostRepository repoMock = mock(PostRepository.class);
+        PostMapper mapperMock = mock(PostMapper.class);
+
+        when(repoMock.findById(1)).thenReturn(Optional.empty());
+
+        PostService service = new PostService(repoMock, mapperMock);
+        assertThrows(NotFoundException.class, () -> service.getPostById(1));
+    }
+
+    @Test
     void searchByContent() {
         PostRepository repoMock = mock(PostRepository.class);
         PostMapper mapperMock = mock(PostMapper.class);
@@ -136,7 +166,7 @@ class PostServiceTest {
         when(repoMock.findById(1)).thenReturn(Optional.empty());
 
         PostService service = new PostService(repoMock, mapperMock);
-        assertThrows(BadRequestException.class, () -> service.likeById(1));
+        assertThrows(NotFoundException.class, () -> service.likeById(1));
     }
 
     @Test
@@ -165,6 +195,6 @@ class PostServiceTest {
         when(repoMock.findById(1)).thenReturn(Optional.empty());
 
         PostService service = new PostService(repoMock, mapperMock);
-        assertThrows(BadRequestException.class, () -> service.dislikeById(1));
+        assertThrows(NotFoundException.class, () -> service.dislikeById(1));
     }
 }

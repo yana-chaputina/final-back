@@ -3,6 +3,7 @@ package ru.rosbank.javaschool.finalprojectback.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.rosbank.javaschool.finalprojectback.dto.UserProfileResponseDto;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -16,11 +17,8 @@ public class PostEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
-    private int authorId;
-
-    @Column(nullable = false)
-    private String authorName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private UserEntity author;
 
     @Column(nullable = false)
     private LocalDate created;

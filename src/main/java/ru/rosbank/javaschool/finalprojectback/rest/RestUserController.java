@@ -23,6 +23,6 @@ public class RestUserController {
 
     @PostMapping
     public UserProfileResponseDto save(@RequestBody UserSaveRequestDto dto) {
-        return service.save(dto);
+        return mapper.entityToUserProfileResponseDto(service.save(dto));
     }
 }

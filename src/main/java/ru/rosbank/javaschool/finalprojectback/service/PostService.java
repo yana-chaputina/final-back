@@ -26,6 +26,12 @@ public class PostService {
         return mapper.entityToPostResponseDto(repository.save(mapper.dtoToPostEntity(dto)));
     }
 
+    public void removePostsWithRemovedUser(int id) {
+        repository.findAll().stream()
+                .filter(o -> o.getAuthor().getId() == id)
+                .forEach(o -> o.setRemoved(true));
+    }
+
     public List<PostResponseDto> getSomePosts(int lastPost, int step) {
         return repository.findAll().stream()
                 .filter(o -> o.isRemoved() == false)

@@ -12,6 +12,10 @@ import ru.rosbank.javaschool.finalprojectback.entity.PostEntity;
 @Mapper(componentModel = "spring")
 public interface PostMapper {
 
+    @Mappings({
+            @Mapping(target = "authorId", expression = "java(entity.getAuthor().getId())"),
+            @Mapping(target = "authorName", expression = "java(entity.getAuthor().getName())")
+    })
     PostResponseDto entityToPostResponseDto(PostEntity entity);
 
     @Mappings({

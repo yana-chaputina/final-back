@@ -11,12 +11,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserSaveRequestDto {
 
-    @Min(value = 0, message = "error.validation value")
-    private long id;
+    @Min(value = 0, message = "error.validation.value")
+    private int id;
     @NotNull
     private String name;
     @NotNull

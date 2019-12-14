@@ -8,7 +8,7 @@ import java.util.Collection;
 
 @Data
 public class UserProfileResponseDto {
-    private long id;
+    private int id;
     private String name;
     private String username;
     private String email;

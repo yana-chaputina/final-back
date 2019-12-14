@@ -24,6 +24,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository repository;
     private final PasswordEncoder encoder;
     private final UserMapper mapper;
+    private final PostService postService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -37,7 +38,12 @@ public class UserService implements UserDetailsService {
         );
     }
 
-    public UserProfileResponseDto save(UserSaveRequestDto dto) {
-        return mapper.entityToUserProfileResponseDto(repository.save(mapper.dtoToUserEntity(dto)));
+    public void removeById(int id) {
+        repository.setRemovedById(id);
+        postService.removePostsWithRemovedUser(id);
+    }
+
+    public UserEntity save(UserSaveRequestDto dto) {
+        return repository.save(mapper.dtoToUserEntity(dto, encoder));
     }
 }

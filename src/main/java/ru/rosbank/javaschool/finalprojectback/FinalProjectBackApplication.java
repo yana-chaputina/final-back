@@ -33,9 +33,6 @@ public class FinalProjectBackApplication {
                     new PostEntity(0, vasya, LocalDate.now(), "Second", null, false, 0),
                     new PostEntity(0, vasya, LocalDate.now(), "Third", null, false, 0)
             ));
-            service.removeById(2);
-            vasyaSave = new UserSaveRequestDto(1, "VASYA", "vasya", "secret", "vasya@mail.ru", null);
-            service.save(vasyaSave);
         };
     }
 }

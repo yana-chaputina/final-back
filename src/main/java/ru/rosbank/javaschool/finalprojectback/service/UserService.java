@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.rosbank.javaschool.finalprojectback.dto.UserProfileResponseDto;
-import ru.rosbank.javaschool.finalprojectback.dto.UserResponseDto;
 import ru.rosbank.javaschool.finalprojectback.dto.UserSaveRequestDto;
 import ru.rosbank.javaschool.finalprojectback.entity.UserEntity;
 import ru.rosbank.javaschool.finalprojectback.mapper.UserMapper;
@@ -16,6 +15,8 @@ import ru.rosbank.javaschool.finalprojectback.repository.UserRepository;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -30,6 +31,16 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
+    }
+
+    public List<UserProfileResponseDto> getAll() {
+        return repository.findAll().stream()
+                .filter(o -> o.isEnabled() == true)
+                .filter(o -> o.isCredentialsNonExpired() == true)
+                .filter(o -> o.isAccountNonExpired() == true)
+                .filter(o -> o.isAccountNonLocked() == true)
+                .map(mapper::entityToUserProfileResponseDto)
+                .collect(Collectors.toList());
     }
 
     public UserEntity create(String name, String username, String password, String email, String photo, Collection<GrantedAuthority> authorities) {

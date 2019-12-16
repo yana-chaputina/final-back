@@ -9,6 +9,8 @@ import ru.rosbank.javaschool.finalprojectback.entity.UserEntity;
 import ru.rosbank.javaschool.finalprojectback.mapper.UserMapper;
 import ru.rosbank.javaschool.finalprojectback.service.UserService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -19,6 +21,11 @@ public class RestUserController {
     @GetMapping("/me")
     public UserProfileResponseDto me(@AuthenticationPrincipal UserEntity entity) {
         return mapper.entityToUserProfileResponseDto(entity);
+    }
+
+    @GetMapping()
+    public List<UserProfileResponseDto> getUsers() {
+        return service.getAll();
     }
 
     @PostMapping

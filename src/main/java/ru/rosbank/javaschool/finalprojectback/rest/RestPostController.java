@@ -1,9 +1,11 @@
 package ru.rosbank.javaschool.finalprojectback.rest;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.rosbank.javaschool.finalprojectback.dto.PostResponseDto;
 import ru.rosbank.javaschool.finalprojectback.dto.PostSaveRequestDto;
+import ru.rosbank.javaschool.finalprojectback.entity.UserEntity;
 import ru.rosbank.javaschool.finalprojectback.service.PostService;
 
 import java.util.List;
@@ -35,7 +37,8 @@ public class RestPostController {
     }
 
     @PostMapping
-    public PostResponseDto save(@RequestBody PostSaveRequestDto dto) {
+    public PostResponseDto save(@AuthenticationPrincipal UserEntity entity, @RequestBody PostSaveRequestDto dto) {
+        dto.setAuthor(entity);
         return service.save(dto);
     }
 

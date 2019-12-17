@@ -23,6 +23,11 @@ public class RestUserController {
         return mapper.entityToUserProfileResponseDto(entity);
     }
 
+    @GetMapping(params = "q")
+    public List<UserProfileResponseDto> searchByContent(@RequestParam String q) {
+        return service.searchByUsername(q);
+    }
+
     @GetMapping()
     public List<UserProfileResponseDto> getUsers() {
         return service.getAll();

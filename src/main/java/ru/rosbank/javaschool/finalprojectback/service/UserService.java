@@ -43,10 +43,14 @@ public class UserService implements UserDetailsService {
                 .collect(Collectors.toList());
     }
 
-    public UserEntity create(String name, String username, String password, String email, String photo, Collection<GrantedAuthority> authorities) {
-        return repository.save(
-                new UserEntity(0, name, username, encoder.encode(password), email, photo, authorities, true, true, true, true)
-        );
+    public List<UserProfileResponseDto> searchByUsername(String q) {
+        return repository.findAllByUsernameIs(q).stream()
+                .filter(o -> o.isEnabled() == true)
+                .filter(o -> o.isCredentialsNonExpired() == true)
+                .filter(o -> o.isAccountNonExpired() == true)
+                .filter(o -> o.isAccountNonLocked() == true)
+                .map(mapper::entityToUserProfileResponseDto)
+                .collect(Collectors.toList());
     }
 
     public void removeById(int id) {

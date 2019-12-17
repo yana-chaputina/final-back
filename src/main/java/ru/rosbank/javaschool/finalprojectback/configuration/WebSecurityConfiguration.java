@@ -52,17 +52,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // .antMatchers -> Ant: * - всё, но не /, ** - всё, включая /
                 .antMatchers("/error").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/posts", "/api/search").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/files/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/users/me").authenticated()
-                // ROLE_ -> authority
+                .antMatchers(HttpMethod.POST, "/api/users").permitAll()
                 .antMatchers("/api/**").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
-                .httpBasic()
-                .and()
-                .formLogin().disable()
-                .logout().disable();
+                .httpBasic();
 
     }
 
@@ -74,9 +68,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+        configuration.addAllowedMethod(HttpMethod.DELETE);
         source.registerCorsConfiguration(
                 "/**",
-                new CorsConfiguration().applyPermitDefaultValues()
+                configuration
         );
         return source;
     }

@@ -23,15 +23,14 @@ Content-Type: application/json
 ###
 
 POST {{url}}/api/users
-Authorization: Basic vasya secret
 Content-Type: application/json
 
 {
   "id": 0,
-  "name": "Ivan",
-  "username": "ivan",
-  "password": "ivan",
-  "email": "ivan@mail.ru",
+  "name": "Anton",
+  "username": "anton",
+  "password": "anton",
+  "email": "anton@mail.ru",
   "photo": null
 }
 
@@ -66,7 +65,7 @@ POST {{url}}/api/posts/5/likes
 Authorization: Basic vasya secret
 ###
 
-DELETE {{url}}/api/posts/5/likes
+DELETE {{url}}/api/posts/1/likes
 Authorization: Basic vasya secret
 ###
 

@@ -52,12 +52,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // .antMatchers -> Ant: * - всё, но не /, ** - всё, включая /
                 .antMatchers("/error").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/posts", "/api/users", "/api/search").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/posts", "/api/search").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/files/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/users/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/users/me").authenticated()
                 // ROLE_ -> authority
-                //.antMatchers("/api/**").hasRole("USER")
+                .antMatchers("/api/**").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
@@ -81,14 +80,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         );
         return source;
     }
+
 }
 
-//        @Override
-//        public void addCorsMappings(CorsRegistry registry) {
-//            registry.addMapping("/**")
-//                    .allowedOrigins("*")
-//                    .allowedHeaders("*")
-//                    .allowedMethods("*");
-//        }
 
 

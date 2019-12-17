@@ -10,6 +10,7 @@ import ru.rosbank.javaschool.finalprojectback.entity.UserEntity;
 import ru.rosbank.javaschool.finalprojectback.repository.PostRepository;
 import ru.rosbank.javaschool.finalprojectback.service.UserService;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class FinalProjectBackApplication {
     }
 
     @Bean
-    public CommandLineRunner runner(PostRepository repository, UserService service) {
+    public CommandLineRunner runner(PostRepository repository, UserService service) throws IOException {
         return args -> {
             UserSaveRequestDto vasyaSave = new UserSaveRequestDto(0, "Vasya", "vasya", "secret", "vasya@mail.ru", null);
             UserEntity vasya = service.save(vasyaSave);
@@ -34,5 +35,6 @@ public class FinalProjectBackApplication {
                     new PostEntity(0, vasya, LocalDate.now(), "Third", null, false, 0)
             ));
         };
+
     }
 }

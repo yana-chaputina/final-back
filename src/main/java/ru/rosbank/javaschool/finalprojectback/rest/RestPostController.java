@@ -1,12 +1,16 @@
 package ru.rosbank.javaschool.finalprojectback.rest;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.rosbank.javaschool.finalprojectback.dto.PostResponseDto;
 import ru.rosbank.javaschool.finalprojectback.dto.PostSaveRequestDto;
 import ru.rosbank.javaschool.finalprojectback.entity.UserEntity;
 import ru.rosbank.javaschool.finalprojectback.service.PostService;
+import ru.rosbank.javaschool.finalprojectback.service.UserService;
 
 import java.util.List;
 
@@ -15,6 +19,7 @@ import java.util.List;
 @RequestMapping("/api/posts")
 public class RestPostController {
     private final PostService service;
+    private final UserService userService;
 
     @GetMapping(params = {"lastPost", "step"})
     public List<PostResponseDto> getSomePosts(@RequestParam int lastPost, @RequestParam int step) {
@@ -37,8 +42,10 @@ public class RestPostController {
     }
 
     @PostMapping
-    public PostResponseDto save(@AuthenticationPrincipal UserEntity entity, @RequestBody PostSaveRequestDto dto) {
-        dto.setAuthor(entity);
+    public PostResponseDto save(@RequestBody PostSaveRequestDto dto) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails user = userService.loadUserByUsername(auth.getName());
+        dto.setAuthor((UserEntity) user);
         return service.save(dto);
     }
 

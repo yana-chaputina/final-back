@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.rosbank.javaschool.finalprojectback.dto.PostResponseDto;
 import ru.rosbank.javaschool.finalprojectback.dto.PostSaveRequestDto;
 import ru.rosbank.javaschool.finalprojectback.entity.UserEntity;
+import ru.rosbank.javaschool.finalprojectback.service.PermissionService;
 import ru.rosbank.javaschool.finalprojectback.service.PostService;
 import ru.rosbank.javaschool.finalprojectback.service.UserService;
 
@@ -20,6 +21,7 @@ import java.util.List;
 public class RestPostController {
     private final PostService service;
     private final UserService userService;
+    private final PermissionService permissionService;
 
     @GetMapping(params = {"lastPost", "step"})
     public List<PostResponseDto> getSomePosts(@RequestParam int lastPost, @RequestParam int step) {
@@ -43,14 +45,19 @@ public class RestPostController {
 
     @PostMapping
     public PostResponseDto save(@RequestBody PostSaveRequestDto dto) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails user = userService.loadUserByUsername(auth.getName());
-        dto.setAuthor((UserEntity) user);
+
+        UserEntity user = getAuthorizedUser();
+        if (dto.getId() != 0) {
+            permissionService.isOperationAvailable(dto.getId(), user);
+        }
+        dto.setAuthor(user);
         return service.save(dto);
     }
 
     @DeleteMapping("/{id}")
     public void removeById(@PathVariable int id) {
+        UserEntity user = getAuthorizedUser();
+        permissionService.isOperationAvailable(id, user);
         service.removeById(id);
     }
 
@@ -62,6 +69,13 @@ public class RestPostController {
     @DeleteMapping("/{id}/likes")
     public PostResponseDto dislikeById(@PathVariable int id) {
         return service.dislikeById(id);
+    }
+
+
+    private UserEntity getAuthorizedUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails user = userService.loadUserByUsername(auth.getName());
+        return (UserEntity) user;
     }
 }
 

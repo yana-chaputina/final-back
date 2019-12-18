@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
 import ru.rosbank.javaschool.finalprojectback.constants.ErrorStatusConstant;
 import ru.rosbank.javaschool.finalprojectback.dto.ErrorResponseDto;
+import ru.rosbank.javaschool.finalprojectback.exception.AccessDeniedException;
 import ru.rosbank.javaschool.finalprojectback.exception.BadRequestException;
 import ru.rosbank.javaschool.finalprojectback.exception.NotFoundException;
 import ru.rosbank.javaschool.finalprojectback.exception.UnsupportedFileTypeException;
@@ -72,6 +73,11 @@ public class RestErrorController extends AbstractErrorController {
         if (error instanceof UsernameNotFoundException) {
             status = ErrorStatusConstant.STATUS_404;
             message = "error.not_found";
+            return getErrorResponseDtoResponseEntity(error, status, message);
+        }
+        if (error instanceof AccessDeniedException) {
+            status = ErrorStatusConstant.STATUS_403;
+            message = "error.forbidden";
             return getErrorResponseDtoResponseEntity(error, status, message);
         }
         if (error instanceof MethodArgumentNotValidException) {

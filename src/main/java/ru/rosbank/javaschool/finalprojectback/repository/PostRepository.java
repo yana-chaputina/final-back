@@ -9,7 +9,7 @@ import ru.rosbank.javaschool.finalprojectback.entity.PostEntity;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<PostEntity, Integer> {
-    List<PostEntity> findAllByContentLike(String q);
+    List<PostEntity> findAllByContentLikeIgnoreCase(String q);
 
     @Modifying
     @Query("UPDATE PostEntity p SET p.likes = p.likes + :increment WHERE p.id = :id")

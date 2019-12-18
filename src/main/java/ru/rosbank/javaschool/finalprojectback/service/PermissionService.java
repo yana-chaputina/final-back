@@ -11,11 +11,11 @@ import ru.rosbank.javaschool.finalprojectback.exception.AccessDeniedException;
 public class PermissionService {
     private final PostService postService;
 
-    public boolean isOperationAvailable(int postId, UserEntity entity) {
+    public void isOperationAvailable(int postId, UserEntity entity) {
         PostResponseDto postDto = postService.getPostById(postId);
-        if (postDto.getAuthorId() == entity.getId()) {
-            return true;
-        } else throw new AccessDeniedException();
+        if (postDto.getAuthorId() != entity.getId()) {
+            throw new AccessDeniedException();
+        }
     }
 
 }

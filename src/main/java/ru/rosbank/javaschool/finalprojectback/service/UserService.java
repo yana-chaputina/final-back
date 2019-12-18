@@ -23,8 +23,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository repository;
-    private final PasswordEncoder encoder;
     private final UserMapper mapper;
+    private final PasswordEncoder encoder;
     private final PostService postService;
 
     @Override
@@ -33,22 +33,26 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(username));
     }
 
+    public UserEntity save(UserSaveRequestDto dto) {
+        return repository.save(mapper.dtoToUserEntity(dto, encoder));
+    }
+
     public List<UserProfileResponseDto> getAll() {
         return repository.findAll().stream()
-                .filter(o -> o.isEnabled() == true)
-                .filter(o -> o.isCredentialsNonExpired() == true)
-                .filter(o -> o.isAccountNonExpired() == true)
-                .filter(o -> o.isAccountNonLocked() == true)
+                .filter(UserEntity::isEnabled)
+                .filter(UserEntity::isCredentialsNonExpired)
+                .filter(UserEntity::isAccountNonExpired)
+                .filter(UserEntity::isAccountNonLocked)
                 .map(mapper::entityToUserProfileResponseDto)
                 .collect(Collectors.toList());
     }
 
     public List<UserProfileResponseDto> searchByUsername(String q) {
         return repository.findAllByUsernameIs(q).stream()
-                .filter(o -> o.isEnabled() == true)
-                .filter(o -> o.isCredentialsNonExpired() == true)
-                .filter(o -> o.isAccountNonExpired() == true)
-                .filter(o -> o.isAccountNonLocked() == true)
+                .filter(UserEntity::isEnabled)
+                .filter(UserEntity::isCredentialsNonExpired)
+                .filter(UserEntity::isAccountNonExpired)
+                .filter(UserEntity::isAccountNonLocked)
                 .map(mapper::entityToUserProfileResponseDto)
                 .collect(Collectors.toList());
     }
@@ -58,7 +62,4 @@ public class UserService implements UserDetailsService {
         postService.removePostsWithRemovedUser(id);
     }
 
-    public UserEntity save(UserSaveRequestDto dto) {
-        return repository.save(mapper.dtoToUserEntity(dto, encoder));
-    }
 }

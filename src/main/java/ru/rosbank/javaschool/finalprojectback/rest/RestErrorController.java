@@ -48,6 +48,12 @@ public class RestErrorController extends AbstractErrorController {
         int status = getStatus(request).value();
         String message = "error.unknown";
 
+        if (status == ErrorStatusConstant.STATUS_401) {
+            message = "error.unauthorized";
+            return ResponseEntity.status(status).body(
+                    new ErrorResponseDto(status, message, Collections.emptyMap())
+            );
+        }
         if (error == null) {
             return ResponseEntity.status(status).body(
                     new ErrorResponseDto(status, message, Collections.emptyMap())

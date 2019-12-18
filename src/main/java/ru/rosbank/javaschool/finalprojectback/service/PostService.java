@@ -26,15 +26,9 @@ public class PostService {
         return mapper.entityToPostResponseDto(repository.save(mapper.dtoToPostEntity(dto)));
     }
 
-    public void removePostsWithRemovedUser(int id) {
-        repository.findAll().stream()
-                .filter(o -> o.getAuthor().getId() == id)
-                .forEach(o -> o.setRemoved(true));
-    }
-
     public List<PostResponseDto> getSomePosts(int lastPost, int step) {
         return repository.findAll().stream()
-                .filter(o -> o.isRemoved() == false)
+                .filter(o -> !o.isRemoved())
                 .sorted((o1, o2) -> -(o1.getId() - o2.getId()))
                 .skip(lastPost)
                 .limit(step)
@@ -47,7 +41,7 @@ public class PostService {
         Optional<PostEntity> firstPost = repository.findById(firstPostId);
         ;
         List<Optional<PostEntity>> collect = repository.findAll().stream()
-                .filter(o -> o.isRemoved() == false)
+                .filter(o -> !o.isRemoved())
                 .sorted((o1, o2) -> -(o1.getId() - o2.getId()))
                 .map(Optional::of)
                 .collect(Collectors.toList());
@@ -55,7 +49,7 @@ public class PostService {
     }
     public int getFirstId() {
         List<PostResponseDto> collect = repository.findAll().stream()
-                .filter(o -> o.isRemoved() == false)
+                .filter(o -> !o.isRemoved())
                 .sorted((o1, o2) -> -(o1.getId() - o2.getId()))
                 .limit(1)
                 .map(mapper::entityToPostResponseDto)
@@ -69,13 +63,19 @@ public class PostService {
                 .orElseThrow(NotFoundException::new);
     }
 
+    public void removePostsWithRemovedUser(int id) {
+        repository.findAll().stream()
+                .filter(o -> o.getAuthor().getId() == id)
+                .forEach(o -> o.setRemoved(true));
+    }
+
     public void removeById(int id) {
         repository.setRemovedById(id);
     }
 
     public List<PostResponseDto> searchByContent(String q) {
         return repository.findAllByContentLikeIgnoreCase(q).stream()
-                .filter(o -> o.isRemoved() == false)
+                .filter(o -> !o.isRemoved())
                 .map(mapper::entityToPostResponseDto)
                 .collect(Collectors.toList());
     }

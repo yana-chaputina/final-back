@@ -18,7 +18,7 @@ public class PostSaveRequestDto {
     private UserEntity author;
     @NotNull
     @Size(min = 1, message = "error.validation.min_size")
-    @Size(max = 1000, message = "error.validation.max_size")
+    @Size(max = 255, message = "error.validation.max_size")
     private String content;
     private String media;
 }

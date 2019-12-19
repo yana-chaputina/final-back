@@ -74,7 +74,7 @@ public class PostService {
     }
 
     public List<PostResponseDto> searchByContent(String q) {
-        return repository.findAllByContentLikeIgnoreCase(q).stream()
+        return repository.findAllByContentContainsIgnoreCase(q).stream()
                 .filter(o -> !o.isRemoved())
                 .map(mapper::entityToPostResponseDto)
                 .collect(Collectors.toList());

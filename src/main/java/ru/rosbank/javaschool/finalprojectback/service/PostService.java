@@ -76,6 +76,7 @@ public class PostService {
     public List<PostResponseDto> searchByContent(String q) {
         return repository.findAllByContentContainsIgnoreCase(q).stream()
                 .filter(o -> !o.isRemoved())
+                .sorted((o1, o2) -> -(o1.getId() - o2.getId()))
                 .map(mapper::entityToPostResponseDto)
                 .collect(Collectors.toList());
     }

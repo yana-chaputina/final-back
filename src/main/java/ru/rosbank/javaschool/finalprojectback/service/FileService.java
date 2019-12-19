@@ -48,8 +48,6 @@ public class FileService {
             extension = ".png";
         } else if ("video/webm".equals(contentType)) {
             extension = ".webm";
-        } else if ("audio/mpeg".equals(contentType)) {
-            extension = ".mpeg";
         } else {
             throw new UnsupportedFileTypeException(contentType);
         }
@@ -85,8 +83,6 @@ public class FileService {
             extension = ".png";
         } else if ("video/webm".equals(contentType)) {
             extension = ".webm";
-        } else if ("audio/mpeg".equals(contentType)) {
-            extension = ".mpeg";
         } else {
             throw new UnsupportedFileTypeException(contentType);
         }

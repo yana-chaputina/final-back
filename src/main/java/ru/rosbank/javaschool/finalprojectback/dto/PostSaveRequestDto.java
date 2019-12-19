@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.rosbank.javaschool.finalprojectback.entity.UserEntity;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -13,7 +12,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostSaveRequestDto {
-    @Min(value = 0, message = "error.validation value")
+
     private int id;
     @NotNull
     private UserEntity author;

@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.rosbank.javaschool.finalprojectback.constraint.Email;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -15,11 +14,12 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class UserSaveRequestDto {
 
-    @Min(value = 0, message = "error.validation.value")
     private int id;
     @NotNull
+    @Size(min = 1, message = "error.validation.min_size")
     private String name;
     @NotNull
+    @Size(min = 1, message = "error.validation.min_size")
     private String username;
     @NotNull
     @Size(min = 4, message = "error.validation.min_size")

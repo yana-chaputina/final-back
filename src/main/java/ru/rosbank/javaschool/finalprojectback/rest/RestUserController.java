@@ -9,6 +9,7 @@ import ru.rosbank.javaschool.finalprojectback.entity.UserEntity;
 import ru.rosbank.javaschool.finalprojectback.mapper.UserMapper;
 import ru.rosbank.javaschool.finalprojectback.service.UserService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -34,7 +35,7 @@ public class RestUserController {
     }
 
     @PostMapping
-    public UserProfileResponseDto save(@RequestBody UserSaveRequestDto dto) {
+    public UserProfileResponseDto save(@Valid @RequestBody UserSaveRequestDto dto) {
         return mapper.entityToUserProfileResponseDto(service.save(dto));
     }
 }

@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class PostResponseDto {
     private int id;
     private int authorId;
-    private String authorName;
+    private String authorUsername;
     private LocalDate created;
     private String content;
     private String media;

@@ -1,11 +1,6 @@
 package ru.rosbank.javaschool.finalprojectback.service;
 
-import org.apache.tika.Tika;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.engine.support.descriptor.FileSystemSource;
-import org.mockito.Mockito;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 import ru.rosbank.javaschool.finalprojectback.dto.UploadResponseDto;
 import ru.rosbank.javaschool.finalprojectback.exception.FileStorageException;

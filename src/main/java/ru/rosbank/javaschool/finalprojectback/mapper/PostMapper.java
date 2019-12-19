@@ -14,7 +14,7 @@ public interface PostMapper {
 
     @Mappings({
             @Mapping(target = "authorId", expression = "java(entity.getAuthor().getId())"),
-            @Mapping(target = "authorName", expression = "java(entity.getAuthor().getName())")
+            @Mapping(target = "authorUsername", expression = "java(entity.getAuthor().getUsername())")
     })
     PostResponseDto entityToPostResponseDto(PostEntity entity);
 

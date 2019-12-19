@@ -5,9 +5,8 @@ import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorCon
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -84,6 +83,11 @@ public class RestErrorController extends AbstractErrorController {
         if (error instanceof AccessDeniedException) {
             status = ErrorStatusConstant.STATUS_403;
             message = "error.forbidden";
+            return getErrorResponseDtoResponseEntity(error, status, message);
+        }
+        if (error instanceof DataIntegrityViolationException) {
+            status = ErrorStatusConstant.STATUS_400;
+            message = "error.constraint";
             return getErrorResponseDtoResponseEntity(error, status, message);
         }
         if (error instanceof MethodArgumentNotValidException) {

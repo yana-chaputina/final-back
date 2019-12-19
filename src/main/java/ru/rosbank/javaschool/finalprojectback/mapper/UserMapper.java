@@ -6,7 +6,6 @@ import org.mapstruct.Mappings;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.rosbank.javaschool.finalprojectback.constants.UserConstant;
 import ru.rosbank.javaschool.finalprojectback.dto.UserProfileResponseDto;
-import ru.rosbank.javaschool.finalprojectback.dto.UserResponseDto;
 import ru.rosbank.javaschool.finalprojectback.dto.UserSaveRequestDto;
 import ru.rosbank.javaschool.finalprojectback.entity.UserEntity;
 

@@ -13,6 +13,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Constraint(validatedBy = EmailValidator.class)
 public @interface Email {
+
     String message() default "{javax.validation.constraints.Email.message}";
 
     Class<?>[] groups() default {};

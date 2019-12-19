@@ -144,7 +144,7 @@ class PostServiceTest {
         list.add(post);
         String q = "content";
 
-        when(repoMock.findAllByContentLikeIgnoreCase(q)).thenReturn(list);
+        when(repoMock.findAllByContentContainsIgnoreCase(q)).thenReturn(list);
 
         PostResponseDto dto = new PostResponseDto(1, 1, "Ivan", LocalDate.now(), "content", "", 0);
         List<PostResponseDto> listDto = new ArrayList<>();

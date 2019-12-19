@@ -22,7 +22,6 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 @Service
-@Transactional
 public class FileService {
     private final static Logger logger = LoggerFactory.getLogger(FileService.class);
     private final String uploadPath;

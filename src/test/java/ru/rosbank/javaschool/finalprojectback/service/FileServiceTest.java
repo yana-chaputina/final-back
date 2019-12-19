@@ -87,7 +87,6 @@ class FileServiceTest {
         MultipartFile multipartFileMock = mock(MultipartFile.class);
         when(multipartFileMock.getContentType()).thenReturn("image/jpeg");
         String uploadPath = "";
-        Path pathMock = mock(Path.class);
         doThrow(IOException.class).when(multipartFileMock).transferTo((Path) any());
         FileService fileService = new FileService(uploadPath);
         assertThrows(FileStorageException.class, () -> fileService.save(multipartFileMock));

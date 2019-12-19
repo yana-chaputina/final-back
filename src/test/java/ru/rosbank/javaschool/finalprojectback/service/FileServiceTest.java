@@ -58,19 +58,6 @@ class FileServiceTest {
     }
 
     @Test
-    void saveMultipartMpeg() {
-
-        MultipartFile multipartFileMock = mock(MultipartFile.class);
-        when(multipartFileMock.getContentType()).thenReturn("audio/mpeg");
-        String uploadPath = "";
-
-        FileService fileService = new FileService(uploadPath);
-        UploadResponseDto dto = fileService.save(multipartFileMock);
-        assertTrue(dto.getName().endsWith(".mpeg"));
-
-    }
-
-    @Test
     void saveMultipartThrowUnsupportedFileTypeException() {
 
         MultipartFile multipartFileMock = mock(MultipartFile.class);

@@ -1,11 +1,13 @@
 package ru.rosbank.javaschool.finalprojectback.service;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.tika.Tika;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.rosbank.javaschool.finalprojectback.domain.UploadInfo;
 import ru.rosbank.javaschool.finalprojectback.dto.UploadResponseDto;
@@ -20,6 +22,7 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class FileService {
     private final static Logger logger = LoggerFactory.getLogger(FileService.class);
     private final String uploadPath;
